@@ -1,0 +1,161 @@
+[gd_scene load_steps=25 format=3 uid="uid://c0vuxlu7wwwd6"]
+
+[ext_resource type="Script" path="res://Characters/Character.gd" id="1_i7ufa"]
+[ext_resource type="Texture2D" uid="uid://c4xbj51dk54ef" path="res://spritesheets/Leg Boi (idle).png" id="2_oerpg"]
+[ext_resource type="Texture2D" uid="uid://bn6s0m8j1h1y4" path="res://spritesheets/Leg Boi (jumping).png" id="3_k2aow"]
+[ext_resource type="Texture2D" uid="uid://cx0yechq5gb32" path="res://spritesheets/Leg Boi-walking.png" id="3_obgsy"]
+[ext_resource type="Texture2D" uid="uid://bljortlugkvgm" path="res://spritesheets/Leg Boi (walking).png" id="4_0c8it"]
+[ext_resource type="Script" path="res://Default States/Grounded/StateIdle.gd" id="5_2o0vt"]
+[ext_resource type="Script" path="res://Default States/Grounded/StateWalk.gd" id="6_cqprd"]
+[ext_resource type="Script" path="res://Default States/Air/StateFall.gd" id="7_ek4pr"]
+[ext_resource type="Script" path="res://Default States/Grounded/StateLanding.gd" id="8_kjcg3"]
+[ext_resource type="Script" path="res://Default States/Grounded/StateJumpSquat.gd" id="9_n0rmt"]
+[ext_resource type="Script" path="res://Default States/Grounded/StateDash.gd" id="10_yqne2"]
+[ext_resource type="Script" path="res://Default States/Grounded/StateRun.gd" id="11_lxjcq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gct5r"]
+atlas = ExtResource("3_k2aow")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j84jy"]
+atlas = ExtResource("2_oerpg")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gcyak"]
+atlas = ExtResource("2_oerpg")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pmsku"]
+atlas = ExtResource("3_k2aow")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t6acj"]
+atlas = ExtResource("3_obgsy")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ou6sf"]
+atlas = ExtResource("3_obgsy")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_acsro"]
+atlas = ExtResource("3_obgsy")
+region = Rect2(0, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s6yme"]
+atlas = ExtResource("3_obgsy")
+region = Rect2(0, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0rd7u"]
+atlas = ExtResource("4_0c8it")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y6u72"]
+atlas = ExtResource("4_0c8it")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cfcrh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gct5r")
+}],
+"loop": true,
+"name": &"fall",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j84jy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gcyak")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pmsku")
+}],
+"loop": true,
+"name": &"jumpsquat",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t6acj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ou6sf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_acsro")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s6yme")
+}],
+"loop": true,
+"name": &"run",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0rd7u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y6u72")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fdhav"]
+size = Vector2(48, 56)
+
+[node name="LilBoi" type="CharacterBody2D"]
+collision_mask = 15
+script = ExtResource("1_i7ufa")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_cfcrh")
+animation = &"idle"
+frame_progress = 0.118711
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_fdhav")
+
+[node name="StateIdle" type="Node2D" parent="."]
+script = ExtResource("5_2o0vt")
+
+[node name="StateWalk" type="Node2D" parent="."]
+script = ExtResource("6_cqprd")
+
+[node name="StateFall" type="Node2D" parent="."]
+script = ExtResource("7_ek4pr")
+
+[node name="StateLanding" type="Node2D" parent="."]
+script = ExtResource("8_kjcg3")
+
+[node name="StateJumpSquat" type="Node2D" parent="."]
+script = ExtResource("9_n0rmt")
+
+[node name="StateDash" type="Node2D" parent="."]
+script = ExtResource("10_yqne2")
+
+[node name="StateRun" type="Node2D" parent="."]
+script = ExtResource("11_lxjcq")
+
+[node name="StateLabel" type="Label" parent="."]
+texture_filter = 1
+offset_left = -64.0
+offset_top = -47.0
+offset_right = 64.0
+offset_bottom = -24.0
+text = "CurrentState"
+horizontal_alignment = 1

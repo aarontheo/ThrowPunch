@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bvttqp8g8ggbm"]
+
+[ext_resource type="Script" path="res://flick_tester.gd" id="1_yb32p"]
+
+[node name="FlickTester" type="Node2D"]
+script = ExtResource("1_yb32p")
+
+[node name="Camera2D" type="Camera2D" parent="."]
