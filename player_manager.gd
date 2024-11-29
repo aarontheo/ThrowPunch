@@ -9,8 +9,8 @@ var player_dict:Dictionary
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	player_dict = {
-		0:-1,
-		1:-1,
+		0:0,
+		1:1,
 	}
 
 func _on_joy_connection_changed(device: int, connected: bool):

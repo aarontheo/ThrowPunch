@@ -2,7 +2,7 @@ extends Node2D
 class_name State
 
 var state_attributes = {}
-var parent: Character
+var parent: CharacterBody2D
 var controller:Controller
 var input:DeviceInput
 var anim: AnimatedSprite2D
@@ -16,6 +16,7 @@ var interruptible = true
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	parent = get_parent()
+	#print(parent)
 #	Add the collision shapes that are children of this node
 	#for collider in find_children("*", "CollisionShape2D"):
 		#parent.shape_owner

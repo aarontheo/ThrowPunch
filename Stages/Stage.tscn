@@ -190,7 +190,8 @@ editor_draw_drag_margin = true
 
 [node name="LilBoi1" parent="Characters" instance=ExtResource("2_fpm0y")]
 position = Vector2(38, -66)
+controller_id = 0
 
 [node name="LilBoi2" parent="Characters" instance=ExtResource("2_fpm0y")]
 position = Vector2(-193, -150)
-controller_id = 0
+controller_id = 1

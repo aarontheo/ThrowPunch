@@ -26,8 +26,7 @@ func _ready() -> void:
 
 # Called whenever the player makes an input.
 func _input(event: InputEvent) -> void:
-	print(event)
-	print(event.device)
+	#print(event.device)
 	if event is InputEventKey:
 		if !event.pressed or event.is_echo():
 			return
@@ -60,7 +59,7 @@ func is_action_press_buffered(action: String) -> bool:
 	# Get the inputs associated with the action. If any one of them was pressed in the last BUFFER_WINDOW milliseconds,
 	# the action is buffered.
 	if action_timestamps.has(action):
-		print(action)
+		#print(action)
 		var delta = Time.get_ticks_msec() - action_timestamps[action]
 		if delta <= BUFFER_WINDOW:
 			_invalidate_action(action)

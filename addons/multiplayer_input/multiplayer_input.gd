@@ -156,7 +156,7 @@ func is_action_pressed(device: int, action: StringName, exact_match: bool = fals
 func is_action_press_buffered(device:int, action: StringName, buffer_time: float = 0.1) -> bool:
 	if device >= 0:
 		action = get_action_name(device, action)
-	return InputBuffer.is_action_press_buffered(action, buffer_time)
+	return InputBuffer.is_action_press_buffered(action)
 
 ## Returns the name of a gamepad-specific action
 func get_action_name(device: int, action: StringName) -> StringName:

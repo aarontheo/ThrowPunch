@@ -30,7 +30,15 @@ class_name Character
 
 @export var air_acceleration:int = 200 #horizontal acceleration in the air
 @export var max_airspeed:int = 300 #the maximum horizontal airspeed
+
+
+## APPEARANCE
+#@export_group("Appearance")
+#@export var color_1:Color = Color(0, 0, 0, 0)
+#@export var color_2:Color = Color(0, 0, 0, 0)
 #endregion
+
+
 
 ######################
 ## MEMBER VARIABLES ##
@@ -58,8 +66,9 @@ var input:DeviceInput
 var controller:Controller
 var anim:AnimatedSprite2D
 
-#func _init() -> void:
-	#pass
+#func _init(pos:Vector2) -> void:
+	#super._init()
+	#position = pos
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -70,6 +79,7 @@ func _ready() -> void:
 	anim = get_node("AnimatedSprite2D")
 	# Add all the child states into the states dict
 	for state in find_children("*", "State"):
+		#state.parent = self
 		states[state.name] = state
 		state.input = input
 		state.controller = controller

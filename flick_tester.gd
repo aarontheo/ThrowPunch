@@ -24,6 +24,6 @@ func _physics_process(delta: float) -> void:
 		color = Color.FIREBRICK
 	else:
 		color = Color.CADET_BLUE
-	analog.x = Controller.x_axis()
-	analog.y = Controller.y_axis()
+	#analog.x = Controller.x_axis()
+	#analog.y = Controller.y_axis()
 	queue_redraw()
