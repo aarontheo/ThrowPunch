@@ -20,7 +20,6 @@ func get_transition(delta:float):
 	if next_state != null:
 		return next_state
 	
-	#if Input.is_action_just_pressed("Jump"):
 	#if InputBuffer.is_action_press_buffered("Flick_h"):
 		#return "StateDash"
 	if not controller.x_axis():

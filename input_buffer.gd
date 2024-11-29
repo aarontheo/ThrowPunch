@@ -24,27 +24,36 @@ func _ready() -> void:
 	joypad_timestamps = {}
 	action_timestamps = {}
 
+# TODO: Need to fix- InputBuffer DOES NOT track device_id of input events.
+
 # Called whenever the player makes an input.
 func _input(event: InputEvent) -> void:
-	#print(event.device)
+	#print("Event: ", event.as_text())
+	#print("Event Device: ", event.device)
 	if event is InputEventKey:
 		if !event.pressed or event.is_echo():
 			return
 
 		var scancode: int = event.keycode
-		keyboard_timestamps[scancode] = Time.get_ticks_msec()
+#		eventkey contains the normal event info plus the device_id.
+		var eventkey = [scancode, -1] # -1 for keyboard
+		keyboard_timestamps[eventkey] = Time.get_ticks_msec()
 	elif event is InputEventJoypadButton:
 		if !event.pressed or event.is_echo():
 			return
 
 		var button_index: int = event.button_index
-		joypad_timestamps[button_index] = Time.get_ticks_msec()
+		var eventkey = [button_index, event.device]
+		#print("Button index: ", button_index)
+		joypad_timestamps[eventkey] = Time.get_ticks_msec()
 	elif event is InputEventJoypadMotion:
 		if abs(event.axis_value) < JOY_DEADZONE:
 			return
 
 		var axis_code: String = str(event.axis) + "_" + str(sign(event.axis_value))
-		joypad_timestamps[axis_code] = Time.get_ticks_msec()
+		var eventkey = [axis_code, event.device]
+		#print("Axis code: ", axis_code)
+		joypad_timestamps[eventkey] = Time.get_ticks_msec()
 	elif event is InputEventAction:
 		#print(event)
 		#print(event.pressed)
@@ -52,7 +61,8 @@ func _input(event: InputEvent) -> void:
 			return
 
 		var action_name = event.action
-		action_timestamps[action_name] = Time.get_ticks_msec()
+		var eventkey = [action_name, event.device]
+		action_timestamps[eventkey] = Time.get_ticks_msec()
 
 # Returns whether any of the keyboard keys or joypad buttons in the given action were pressed within the buffer window.
 func is_action_press_buffered(action: String) -> bool:
@@ -67,16 +77,17 @@ func is_action_press_buffered(action: String) -> bool:
 	for event in InputMap.action_get_events(action):
 		if event is InputEventKey:
 			var scancode: int = event.keycode
-			if keyboard_timestamps.has(scancode):
-				if Time.get_ticks_msec() - keyboard_timestamps[scancode] <= BUFFER_WINDOW:
+			var eventkey = [scancode, -1] # -1 for keyboard
+			if keyboard_timestamps.has(eventkey):
+				if Time.get_ticks_msec() - keyboard_timestamps[eventkey] <= BUFFER_WINDOW:
 					# Prevent this method from returning true repeatedly and registering duplicate actions.
 					_invalidate_action(action)
-
 					return true;
 		elif event is InputEventJoypadButton:
 			var button_index: int = event.button_index
-			if joypad_timestamps.has(button_index):
-				var delta = Time.get_ticks_msec() - joypad_timestamps[button_index]
+			var eventkey = [button_index, event.device]
+			if joypad_timestamps.has(eventkey):
+				var delta = Time.get_ticks_msec() - joypad_timestamps[eventkey]
 				if delta <= BUFFER_WINDOW:
 					_invalidate_action(action)
 					return true
@@ -84,8 +95,18 @@ func is_action_press_buffered(action: String) -> bool:
 			if abs(event.axis_value) < JOY_DEADZONE:
 				return false
 			var axis_code: String = str(event.axis) + "_" + str(sign(event.axis_value))
-			if joypad_timestamps.has(axis_code):
-				var delta = Time.get_ticks_msec() - joypad_timestamps[axis_code]
+			var eventkey = [axis_code, event.device]
+			if joypad_timestamps.has(eventkey):
+				var delta = Time.get_ticks_msec() - joypad_timestamps[eventkey]
+				if delta <= BUFFER_WINDOW:
+					_invalidate_action(action)
+					return true
+		elif event is InputEventAction:
+			var action_name = event.action
+			var eventkey = [action_name, event.device]
+			action_timestamps[eventkey] = Time.get_ticks_msec()
+			if action_timestamps.has(eventkey):
+				var delta = Time.get_ticks_msec() - action_timestamps[eventkey]
 				if delta <= BUFFER_WINDOW:
 					_invalidate_action(action)
 					return true
@@ -103,17 +124,21 @@ func _invalidate_action(action: String) -> void:
 	for event in InputMap.action_get_events(action):
 		if event is InputEventKey:
 			var scancode: int = event.keycode
-			if keyboard_timestamps.has(scancode):
-				keyboard_timestamps[scancode] = 0
+			var eventkey = [scancode, -1] # -1 for keyboard
+			if keyboard_timestamps.has(eventkey):
+				keyboard_timestamps[eventkey] = 0
 		elif event is InputEventJoypadButton:
 			var button_index: int = event.button_index
-			if joypad_timestamps.has(button_index):
-				joypad_timestamps[button_index] = 0
+			var eventkey = [button_index, event.device]
+			if joypad_timestamps.has(eventkey):
+				joypad_timestamps[eventkey] = 0
 		elif event is InputEventJoypadMotion:
 			var axis_code: String = str(event.axis) + "_" + str(sign(event.axis_value))
-			if joypad_timestamps.has(axis_code):
-				joypad_timestamps[axis_code] = 0
+			var eventkey = [axis_code, event.device]
+			if joypad_timestamps.has(eventkey):
+				joypad_timestamps[eventkey] = 0
 		elif event is InputEventAction:
 			var action_name = event.action
-			if action_timestamps.has(action_name):
-				action_timestamps[action_name] = 0
+			var eventkey = [action_name, event.device]
+			if action_timestamps.has(eventkey):
+				action_timestamps[eventkey] = 0
