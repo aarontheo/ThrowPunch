@@ -1,4 +1,4 @@
-extends State
+extends StateGrounded
 class_name StateWalk
 
 # This is the logic that runs each frame.
@@ -21,10 +21,8 @@ func get_transition(delta:float):
 		return next_state
 	
 	#if Input.is_action_just_pressed("Jump"):
-	if InputBuffer.is_action_press_buffered("Flick_h"):
-		return "StateDash"
-	if InputBuffer.is_action_press_buffered("Jump"):
-		return "StateJumpSquat"
+	#if InputBuffer.is_action_press_buffered("Flick_h"):
+		#return "StateDash"
 	if not controller.x_axis():
 		return "StateIdle"
 

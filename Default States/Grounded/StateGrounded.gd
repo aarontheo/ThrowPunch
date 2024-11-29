@@ -24,7 +24,7 @@ func get_transition(delta:float):
 	
 	if not parent.is_on_floor():
 		return "StateFall"
-	if InputBuffer.is_action_press_buffered("Jump"):
+	if input.is_action_press_buffered("Jump"):
 		return "StateJumpSquat"
 
 # These functions execute whenever the state transitions

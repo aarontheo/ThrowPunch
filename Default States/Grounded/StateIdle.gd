@@ -12,8 +12,8 @@ func get_transition(delta:float):
 	if next_state != null:
 		return next_state
 
-	if InputBuffer.is_action_press_buffered("Flick_h"):
-		return "StateDash"
+	#if InputBuffer.is_action_press_buffered("Flick_h"):
+		#return "StateDash"
 	if controller.x_axis():
 		parent.velocity.x = controller.x_axis() * parent.walk_speed
 		return "StateWalk"

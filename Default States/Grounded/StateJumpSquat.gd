@@ -13,7 +13,7 @@ func get_transition(delta:float):
 		return next_state
 	
 	if parent.frames >= parent.jumpsquat_frames:
-		if Input.is_action_pressed("Jump"):
+		if input.is_action_pressed("Jump"):
 			parent.velocity.y = -parent.fullhop_v
 		else:
 			parent.velocity.y = -parent.shorthop_v

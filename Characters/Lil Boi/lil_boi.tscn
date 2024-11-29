@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://c0vuxlu7wwwd6"]
+[gd_scene load_steps=24 format=3 uid="uid://c0vuxlu7wwwd6"]
 
 [ext_resource type="Script" path="res://Characters/Character.gd" id="1_i7ufa"]
 [ext_resource type="Texture2D" uid="uid://c4xbj51dk54ef" path="res://spritesheets/Leg Boi (idle).png" id="2_oerpg"]
@@ -10,7 +10,6 @@
 [ext_resource type="Script" path="res://Default States/Air/StateFall.gd" id="7_ek4pr"]
 [ext_resource type="Script" path="res://Default States/Grounded/StateLanding.gd" id="8_kjcg3"]
 [ext_resource type="Script" path="res://Default States/Grounded/StateJumpSquat.gd" id="9_n0rmt"]
-[ext_resource type="Script" path="res://Default States/Grounded/StateDash.gd" id="10_yqne2"]
 [ext_resource type="Script" path="res://Default States/Grounded/StateRun.gd" id="11_lxjcq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gct5r"]
@@ -144,9 +143,6 @@ script = ExtResource("8_kjcg3")
 
 [node name="StateJumpSquat" type="Node2D" parent="."]
 script = ExtResource("9_n0rmt")
-
-[node name="StateDash" type="Node2D" parent="."]
-script = ExtResource("10_yqne2")
 
 [node name="StateRun" type="Node2D" parent="."]
 script = ExtResource("11_lxjcq")

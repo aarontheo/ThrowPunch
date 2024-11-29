@@ -111,8 +111,9 @@ func is_action_pressed(action: StringName, exact_match: bool = false) -> bool:
 	return MultiplayerInput.is_action_pressed(device, action, exact_match)
 
 func is_action_press_buffered(action: StringName, exact_match: bool = false) -> bool:
+	#print(device, action)
 	if !is_connected: return false
-	return MultiplayerInput.is_action_press_buffered(device, action, exact_match)
+	return MultiplayerInput.is_action_press_buffered(device, action)
 
 func parse_input_event(event: InputEvent):
 	if !is_connected: return

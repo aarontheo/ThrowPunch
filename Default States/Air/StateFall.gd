@@ -10,7 +10,7 @@ func state_logic(delta:float) -> void:
 	
 	# Allow for aerial jumps
 	if parent.aerial_jumps > 0:
-		if InputBuffer.is_action_press_buffered("Jump"):
+		if input.is_action_press_buffered("Jump"):
 			parent.velocity.y = -parent.aerial_jump_v
 			parent.aerial_jumps -= 1
 	
@@ -33,8 +33,8 @@ func get_transition(delta:float):
 		return next_state
 
 	# Detect fast falling input (downward stick flick)
-	if parent.velocity.y >= 0 and controller.y_axis() > 0 and InputBuffer.is_action_press_buffered("Flick_v"):
-		fast_falling = true
+	#if parent.velocity.y >= 0 and controller.y_axis() > 0 and InputBuffer.is_action_press_buffered("Flick_v"):
+		#fast_falling = true
 	
 	if parent.is_on_floor():
 		return "StateLanding"

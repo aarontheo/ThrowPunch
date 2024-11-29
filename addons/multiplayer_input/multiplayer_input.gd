@@ -50,6 +50,7 @@ func reset():
 		Input.joy_connection_changed.connect(_on_joy_connection_changed)
 
 func _on_joy_connection_changed(device: int, connected: bool):
+	print("Connecting device: ", device, connected)
 	if connected:
 		_create_actions_for_device(device)
 	else:
@@ -153,9 +154,9 @@ func is_action_pressed(device: int, action: StringName, exact_match: bool = fals
 		action = get_action_name(device, action)
 	return Input.is_action_pressed(action, exact_match)
 
-func is_action_press_buffered(device:int, action: StringName, buffer_time: float = 0.1) -> bool:
-	if device >= 0:
-		action = get_action_name(device, action)
+func is_action_press_buffered(device:int, action: StringName) -> bool:
+	#print("is_action_press_buffered", device, action)
+	action = get_action_name(device, action)
 	return InputBuffer.is_action_press_buffered(action)
 
 ## Returns the name of a gamepad-specific action
@@ -171,8 +172,7 @@ func get_action_name(device: int, action: StringName) -> StringName:
 	return action
 
 func parse_input_event(device, event):
-	if device >= 0:
-		event.action = get_action_name(device, event.action)
+	event.action = get_action_name(device, event.action)
 	Input.parse_input_event(event)
 
 ## Restricts actions that start with "ui_" to only work on a single device.
