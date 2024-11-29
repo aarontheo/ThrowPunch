@@ -22,7 +22,7 @@ class_name Character
 @export var fast_fall_speed:int = 800 #the speed the character falls when fastfalling
 
 
-@export var jumpsquat_frames:int = 6 #the amount of frames which decides between a fullhop and shorthop
+@export var jumpsquat_frames:int = 3 #the amount of frames which decides between a fullhop and shorthop
 @export var fullhop_v:int = gravity*0.4 #the upward velocity applied when doing a full-jump
 @export var shorthop_v:int = gravity*0.25 #the upward velocity applied when doing a half-jump
 @export var aerial_jump_v:int = fullhop_v #the upward velocity of an aerial jump
