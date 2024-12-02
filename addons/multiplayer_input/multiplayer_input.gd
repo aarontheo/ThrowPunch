@@ -15,6 +15,9 @@ extends Node
 ## An array of all the non-duplicated action names
 var core_actions = []
 
+## An array of any custom actions that need to be duplicated for each controller but don't map to an input
+var custom_actions = ["Flick_h", "Flick_v"]
+
 # a dictionary of all action names
 # the keys are the device numbers
 # the values are a dictionary that maps action name to device action name
@@ -62,6 +65,13 @@ func _create_actions_for_device(device: int):
 		return
 
 	device_actions[device] = {}
+	
+	for custom_action in custom_actions:
+		var new_action = "%s%s" % [device, custom_action]
+		var deadzone = InputMap.action_get_deadzone(custom_action)
+		InputMap.add_action(new_action, deadzone)
+		device_actions[device][custom_action] = new_action
+	
 	for core_action in core_actions:
 		var new_action = "%s%s" % [device, core_action]
 		var deadzone = InputMap.action_get_deadzone(core_action)
@@ -70,6 +80,7 @@ func _create_actions_for_device(device: int):
 		var events = InputMap.action_get_events(core_action).filter(_is_joypad_event)
 
 		# only copy this event if it is relevant to joypads
+#		TODO: Modify this code to duplicate non-inputted actions for each joypad so that flicking can work!
 		if events.size() > 0:
 			# first add the action with the new name
 			InputMap.add_action(new_action, deadzone)
@@ -85,6 +96,8 @@ func _create_actions_for_device(device: int):
 
 				# switch the device to be just this joypad
 				InputMap.action_add_event(new_action, new_event)
+
+	print(device_actions)
 
 func _delete_actions_for_device(device: int):
 	device_actions.erase(device)

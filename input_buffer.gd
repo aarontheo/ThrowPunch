@@ -11,10 +11,14 @@ const BUFFER_WINDOW: int = 150
 # The godot default deadzone is 0.2 so I chose to have it the same
 const JOY_DEADZONE: float = 0.2
 
+const flick_speed = 0.3 #The stick must move by this amount or more in 1 frame to trigger a flick
+const flick_deadzone = 0.5
+
 var keyboard_timestamps: Dictionary
 var joypad_timestamps: Dictionary
+var joypad_prev: Dictionary
 var action_timestamps: Dictionary
-var flick_timestamps: Dictionary
+# var flick_timestamps: Dictionary
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -23,8 +27,21 @@ func _ready() -> void:
 	# Initialize all dictionary entries.
 	keyboard_timestamps = {}
 	joypad_timestamps = {}
+	joypad_prev = {}
 	action_timestamps = {}
-	flick_timestamps = {}
+	# flick_timestamps = {}
+
+func flick(event:InputEventJoypadMotion):
+	print("Flicking! ", Time.get_ticks_msec())
+	var flick_event = InputEventAction.new()
+	flick_event.pressed = true
+	if event.axis == JOY_AXIS_LEFT_X:
+		flick_event.action = "Flick_h"
+	elif event.axis == JOY_AXIS_LEFT_Y:
+		flick_event.action = "Flick_y"
+	else:
+		return
+	MultiplayerInput.parse_input_event(event.device, flick_event)
 
 # Called whenever the player makes an input.
 func _input(event: InputEvent) -> void:
@@ -46,6 +63,7 @@ func _input(event: InputEvent) -> void:
 		var eventkey = [button_index, event.device]
 		#print("Button index: ", button_index)
 		joypad_timestamps[eventkey] = Time.get_ticks_msec()
+
 	elif event is InputEventJoypadMotion:
 		# print(event.axis_value)
 		if abs(event.axis_value) < JOY_DEADZONE:
@@ -53,8 +71,30 @@ func _input(event: InputEvent) -> void:
 
 		var axis_code: String = str(event.axis) + "_" + str(sign(event.axis_value))
 		var eventkey = [axis_code, event.device]
+
+		# Logic for stick flicking goes here
+		if joypad_timestamps.has(eventkey):
+			var prev_axis = joypad_prev[eventkey]
+			#print("prev_axis: ", prev_axis)
+			var axis = event.axis_value
+			#print("axis: ", axis)
+			var axis_velocity = axis - prev_axis
+			#print("Axis_velocity: ", axis_velocity)
+
+			if axis < 0 and axis_velocity <= -flick_speed:
+				# flicked_h = true
+				flick(event)
+			elif axis > 0 and axis_velocity >= flick_speed:
+				# flicked_h = true
+				flick(event)
+			# if abs(axis_velocity) >= flick_speed:
+			# 	print("Flicking! ", Time.get_ticks_msec())
+			# 	# flick(event, event.device)
+
+
 		#print("Axis code: ", axis_code)
 		joypad_timestamps[eventkey] = Time.get_ticks_msec()
+		joypad_prev[eventkey] = event.axis_value
 	elif event is InputEventAction:
 		#print(event)
 		#print(event.pressed)
