@@ -14,6 +14,7 @@ const JOY_DEADZONE: float = 0.2
 var keyboard_timestamps: Dictionary
 var joypad_timestamps: Dictionary
 var action_timestamps: Dictionary
+var flick_timestamps: Dictionary
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -23,8 +24,7 @@ func _ready() -> void:
 	keyboard_timestamps = {}
 	joypad_timestamps = {}
 	action_timestamps = {}
-
-# TODO: Need to fix- InputBuffer DOES NOT track device_id of input events.
+	flick_timestamps = {}
 
 # Called whenever the player makes an input.
 func _input(event: InputEvent) -> void:
@@ -47,6 +47,7 @@ func _input(event: InputEvent) -> void:
 		#print("Button index: ", button_index)
 		joypad_timestamps[eventkey] = Time.get_ticks_msec()
 	elif event is InputEventJoypadMotion:
+		# print(event.axis_value)
 		if abs(event.axis_value) < JOY_DEADZONE:
 			return
 
